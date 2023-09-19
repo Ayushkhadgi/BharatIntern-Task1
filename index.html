@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+        }
+
+        input[type="file"] {
+            margin-top: 10px;
+        }
+
+        img, video {
+            max-width: 100%;
+            margin-top: 10px;
+            height: 400px;
+            width: 30%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="background-color: red;">Create a Blog Post</h1>
+    
+  <div> 
+    <label for="title">Title:</label>
+    <input type="text" id="title">
+  </div>
+    <label for="content">Content:</label>
+    <textarea id="content"></textarea>
+    
+    
+    <label for="image">Image:</label>
+    <input type="file" id="image">
+    
+    <label for="video">Video URL:</label>
+    <input type="video/mp4" id="video">
+    
+    <button onclick="addContent()">Add Content</button>
+
+    <div id="blog-content"></div>
+
+    <script>
+        async function addContent() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const imageInput = document.getElementById('image');
+            const videoURL = document.getElementById('video').value;
+            
+            const blogContent = document.getElementById('blog-content');
+            const blogPost = document.createElement('div');
+            
+            const titleElement = document.createElement('h2');
+            titleElement.textContent = title;
+            blogPost.appendChild(titleElement);
+            
+            const contentElement = document.createElement('p');
+            contentElement.textContent = content;
+            blogPost.appendChild(contentElement);
+            
+            if (imageInput.files.length > 0) {
+                const imageElement = document.createElement('img');
+                const file = imageInput.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imageElement.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+                blogPost.appendChild(imageElement);
+            }
+            
+            if (videoURL) {
+                const videoElement = document.createElement('video');
+                videoElement.controls = true;
+                videoElement.autoplay = true;
+                const sourceElement = document.createElement('source');
+                sourceElement.src = videoURL;
+                videoElement.appendChild(sourceElement);
+                blogPost.appendChild(videoElement);
+            }
+            
+            blogContent.appendChild(blogPost);
+            
+            // Clear input fields
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+            imageInput.value = '';
+            document.getElementById('video').value = '';
+        }
+    </script>
+</body>
+</html>
